@@ -3,6 +3,48 @@ import axiosInstance from '../../axiosInstance'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
+const stockOptions = [
+    { category: 'Tech Stocks', stocks: [
+        { symbol: 'AAPL', name: 'Apple Inc.' },
+        { symbol: 'MSFT', name: 'Microsoft Corporation' },
+        { symbol: 'GOOGL', name: 'Alphabet Inc. (Google)' },
+        { symbol: 'AMZN', name: 'Amazon.com Inc.' },
+        { symbol: 'TSLA', name: 'Tesla Inc.' },
+        { symbol: 'META', name: 'Meta Platforms (Facebook)' },
+        { symbol: 'NVDA', name: 'NVIDIA Corporation' },
+        { symbol: 'NFLX', name: 'Netflix Inc.' },
+    ]},
+    { category: 'Major Indices ETFs', stocks: [
+        { symbol: 'SPY', name: 'S&P 500 ETF' },
+        { symbol: 'QQQ', name: 'NASDAQ-100 ETF' },
+        { symbol: 'DIA', name: 'Dow Jones Industrial Average ETF' },
+    ]},
+    { category: 'Popular Stocks', stocks: [
+        { symbol: 'JPM', name: 'JPMorgan Chase' },
+        { symbol: 'BAC', name: 'Bank of America' },
+        { symbol: 'WMT', name: 'Walmart' },
+        { symbol: 'DIS', name: 'Walt Disney' },
+        { symbol: 'NKE', name: 'Nike' },
+        { symbol: 'INTC', name: 'Intel Corporation' },
+        { symbol: 'AMD', name: 'Advanced Micro Devices' },
+        { symbol: 'V', name: 'Visa Inc.' },
+        { symbol: 'MA', name: 'Mastercard' },
+        { symbol: 'PFE', name: 'Pfizer Inc.' },
+    ]},
+    { category: 'Indian Stocks', stocks: [
+        { symbol: 'RELIANCE.NS', name: 'Reliance Industries' },
+        { symbol: 'TCS.NS', name: 'Tata Consultancy Services' },
+        { symbol: 'INFY.NS', name: 'Infosys' },
+        { symbol: 'HDFCBANK.NS', name: 'HDFC Bank' },
+        { symbol: 'ICICIBANK.NS', name: 'ICICI Bank' },
+        { symbol: 'ITC.NS', name: 'ITC Limited' },
+    ]},
+    { category: 'Cryptocurrency', stocks: [
+        { symbol: 'BTC-USD', name: 'Bitcoin' },
+        { symbol: 'ETH-USD', name: 'Ethereum' },
+    ]},
+];
+
 const Dashboard = () => {
     const [ticker, setTicker] = useState('')
     const [error, setError] = useState()
@@ -62,9 +104,26 @@ const Dashboard = () => {
         <div className="row">
             <div className="col-md-6 mx-auto">
                 <form onSubmit={handleSubmit}>
-                    <input type="text" className='form-control' placeholder='Enter Stock Ticker' 
+                    {/* <input type="text" className='form-control' placeholder='Enter Stock Ticker' 
                     onChange={(e) => setTicker(e.target.value)} required
-                    />
+                    /> */}
+                    <select 
+                        className='form-select mb-3' 
+                        value={ticker}
+                        onChange={(e) => setTicker(e.target.value)} 
+                        required
+                    >
+                        <option value="">Select Stock Ticker</option>
+                        {stockOptions.map((group, idx) => (
+                        <optgroup key={idx} label={group.category}>
+                            {group.stocks.map((stock) => (
+                                <option key={stock.symbol} value={stock.symbol}>
+                                    {stock.symbol} - {stock.name}
+                                </option>
+                            ))}
+                        </optgroup>
+                    ))}
+                </select>
                     <small>{error && <div className='text-danger'>{error}</div>}</small>
                     <button type='submit' className='btn btn-info mt-3'>
                         {loading ? <span><FontAwesomeIcon icon={faSpinner} spin /> Please wait...</span>: 'See Prediction'}
